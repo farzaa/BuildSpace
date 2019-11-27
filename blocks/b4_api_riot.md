@@ -76,7 +76,21 @@ Open up VSCode and run this code:
 
     import requests
     summoner_name = "Doublelift"
-    response = 
+    riot_url = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/"
+    my_api_key = "INSERT_YOUR_API_KEY_HERE"
+
+    response = requests.get(riot_url + summoner_name, params={"api_key": my_api_key})
+    riot_json = response.json()
+    print(riot_json)
+
+This code will hit the Riot API and print out the response from the API.
+
+This code is actually not very easy to understand for someone new to coding. But, I think if you go through it slowly line by line, you'll start to *sorta* understand it and that's good enough :).
+
+At the end of program, try adding this line as well and see what it prints out!
+
+    print("Just the encryptedSummonerId", riot_json['id])
+
 
 
 
