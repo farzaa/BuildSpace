@@ -43,9 +43,10 @@ In this case, I'll help you out! The path we're going to be using to get someone
 
 Spend some time reading the documentation for this path. What does it need as input? What does it output?
 
-Spent a little bit of time reading the docs?
 
-Okay cool. Scroll down to "Path Parameters". You'll see that this route needs an `encryptedSummonerId`. You have that! Copy paste it here. Then, be sure to change the region under "Select Region to Execute Against" to the region your account is in. Then click "Execute Request". If you see `200` under "Response Code", it worked! Scroll down to "Response Body" to check out your data :).
+Okay once you've spent a little time reading, scroll down to "Path Parameters". You'll see that this route needs an `encryptedSummonerId`. You have that! Copy paste it in the box. Then, be sure to change the region under "Select Region to Execute Against" to the region your account is in. Then click "Execute Request". If you see `200` under "Response Code", it worked! Scroll down to "Response Body" to check out your data :).
+
+You'll see it gives you a bunch of stuff like your `rank`, how many `wins` you have this season, and even if you're on a `hotStreak`! 
 
 ## Get Your Rank in Python
 Delete all the code you have right now. We need to restructure our code a lot for this or else things are going to get super messy.
@@ -55,7 +56,9 @@ In order us to get our rank here's what we need to do:
 1. Make a request to `lol/summoner/v4/summoners/by-name/{summonerName}`.
 2. Parse this response and get the `encryptedSummonerId` and save it to a variable.
 3. Make a request to `/lol/league/v4/entries/by-summoner/{encryptedSummonerId}`.
-3. Parse the response and get the `rank`.
+3. Parse the response and get our rank.
+
+**All these steps are dependent on each other**, so we need to make sure we do them in order.
 
 Let me show you how it's done :)! First, lets set things up with some variables:
 
@@ -78,22 +81,16 @@ Next, lets make some more variables for the two paths we're going to be using.
     path_to_get_encrypted_id = "lol/summoner/v4/summoners/by-name/"
     path_to_get_rank = "/lol/league/v4/entries/by-summoner/"
 
-Now lets neatly create the full URL that will get our rank. 
-    import requests
-
-    my_region_code = "INSERT_YOUR_REGION_CODE_HERE"
-    my_summoner_name = "INSERT_YOUR_SUMMONER_NAME_HERE"
-    my_api_key = {"api_key": "INSERT_YOUR_API_KEY_HERE"}
-
-    path_encrypted_id = "lol/summoner/v4/summoners/by-name/"
-    path_rank = "lol/league/v4/entries/by-summoner/"
+Now lets neatly create the full URL that will get our rank. Type this in underneath the code you already have.
 
     full_url_to_get_encrypted_id = 
     "https://" + my_region_code + ".api.riotgames.com/" + path_encrypted_id + my_summoner_name
 
-Okay this looks a little complex and I promise it's not. So, we created a new variable called `full_url_encrypted_id` and I *built up the URL* by using a bunch of variables. You'll see why in a moment!
+Okay this looks a little complex and I promise it's not. So, we created a new variable called `full_url_encrypted_id` and I *built up the URL* by using a bunch of variables using `+`. Basically, Python lets me join words together using the `+` operator! 
 
-First, lets go ahead and get our `encryptedSummonerId`.
+Why did I do this? Well, because it's easier to switch stuff out! For example, if I wanted to change the region I'd just need to change `my_region_code`. If I wanted to try a different summoner name, I'd just need to change `my_summoner_name`. Make sense? It makes the code much cleaner.
+
+Now, lets go ahead and get our `encryptedSummonerId`.
 
     import requests
 
@@ -112,24 +109,7 @@ First, lets go ahead and get our `encryptedSummonerId`.
     my_encrypted_id = response.json()["id"]
     print("Got my encrypted id:", my_encrypted_id)
 
-Okay, nothing new here. Now lets create the URL to get your rank.
-
-    import requests
-
-    my_region_code = "INSERT_YOUR_REGION_CODE_HERE"
-    my_summoner_name = "INSERT_YOUR_SUMMONER_NAME_HERE"
-    my_api_key = "INSERT_YOUR_API_KEY_HERE"
-
-    path_encrypted_id = "lol/summoner/v4/summoners/by-name/"
-    path_rank = "lol/league/v4/entries/by-summoner/"
-
-    full_url_to_get_encrypted_id = 
-    "https://" + my_region_code + ".api.riotgames.com/" + path_encrypted_id + my_summoner_name
-
-    response = requests.get(full_url_to_get_encrypted_id, params=my_api_key)
-
-    my_encrypted_id = response.json()["id"]
-    print("Got my encrypted id:", my_encrypted_id)
+Okay, nothing new here. Now lets create the URL to get your rank. Type this in underneath the code you already have.
 
     full_url_to_get_rank = "https://" + my_region_code + ".api.riotgames.com/" + path_rank + my_encrypted_id
 
@@ -155,13 +135,14 @@ Notice how I used `my_encrypted_id` to create `full_url_to_get_rank`. Now, lets 
     full_url_to_get_rank = "https://" + my_region_code + ".api.riotgames.com/" + path_rank + my_encrypted_id
 
     response = requests.get(full_url_to_get_rank, params=my_api_key)
-    my_rank = response.json()['rank']
+    rank_data = response.json()
+    
+    print(rank_data)
 
-    print("My rank is:", my_rank)
 
+That's it!
 
-That's it! Run it :).
-
+This will output a bunch of data related to your rank :).
 
 
 
