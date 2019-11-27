@@ -127,7 +127,7 @@ Run this code:
         print(num)
     print("Complete")
 
-What happens?
+What happens? How does it work?
 
 Try and understand it yourself! If you don't get it, hit me up in the Discord. I'm happy to help :).
 
