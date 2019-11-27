@@ -1,11 +1,11 @@
-# Riot API Basics: Using the Riot API to get Doublelift's Encrypted Summoner ID
+# Riot API Basics: Doublelift's Data
 Lets talk about the Riot API. Basically, Riot is awesome and they have given us an API that lets developers get data related to League of Legends.
 
 Want to get all of the games that Faker lost in SoloQ? Want to make op.gg? Want to automatically text your friend to "get gud" when she is on a losing streak? Want to create a Discord Bot that you and your friends can use to see who's won the most ranked games this week?
 
 This is all possible with the Riot API :).
 
-Lets hop in!
+Lets hop in! We're going to write a program that can get Doublelift's data summoner data!
 
 ## Riot API Key
 In order to use the Riot API, you need a *key*. This is how Riot secures access to their API so a bunch of crazy people can't use their API like a billion times a second to DDoS them and bring down their servers.
@@ -72,7 +72,7 @@ Then we have `/lol/summoner/v4/summoners/by-name/`. This is the route, also some
 ## Get the Encrypted Summoner ID w/ Python
 Time for the easy part :).
 
-Open up VSCode and run this code:
+Open up VSCode and run the following code. I highly recommend you type all this out yourself. Never just copy paste code! You'll learn much slower if all you do is copy paste.
 
     import requests
     summoner_name = "Doublelift"
@@ -83,13 +83,15 @@ Open up VSCode and run this code:
     riot_json = response.json()
     print(riot_json)
 
+Be sure to switch out `my_api_key` with your actual API key!
+
 This code will hit the Riot API and print out the response from the API.
 
 This code is actually not very easy to understand for someone new to coding. But, I think if you go through it slowly line by line, you'll start to *sorta* understand it and that's good enough :).
 
 At the end of program, try adding this line as well and see what it prints out!
 
-    print("Just the encryptedSummonerId", riot_json['id])
+    print("Just the encryptedSummonerId", riot_json["id"])
 
 
 
